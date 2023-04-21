@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
-
-import Table from './Table'
 import { Link, useParams } from 'react-router-dom'
 
 
-
-
-
-
 export default function Home() {
-
 
     const [users, setUsers] = useState([])
 
@@ -21,8 +14,15 @@ export default function Home() {
 
     const loadUsers = async () => {
         const result = await axios.get("http://localhost:8080/users");
-        setUsers(result.data)
+        setUsers(result.data);
     }
+
+    const deleteUser = async (id)=>{
+        const result = await axios.delete(`http://localhost:8080/user/${id}`)
+        console.log(result);
+        loadUsers();
+    }
+
 
 
 
@@ -45,22 +45,24 @@ export default function Home() {
 
 
                         {users.map((user, index) => (
-                            <Table key={index} index={index} user={user} />
+                            <tr>
+                            <th scope="row">{index + 1}</th>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.username}</td>
+                            <td>
+                              <Link className='btn btn-primary mx-2' to={`/viewuser/${user.id}`}>View</Link>
+                              <Link className='btn btn-outline-primary mx-2' to={`/edituser/${user.id}`}>Edit</Link>
+                              <button className='btn btn-danger mx-2' onClick={() => { 
+                                  console.log(users[0].id)
+                                  console.log(user)
+                                  console.log(user.id)
+                    
+                                deleteUser(user.id)
+                                }}>Delete</button>
+                            </td>
+                          </tr>
                         ))}
-                        
-
-
-                        {/* {
-                            users.map((user, index) => {
-                                <tr>
-                                    <th scope="row" key={index}>{index + 1}kk</th>
-                                    <td>{user.name}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.username}</td>
-                                </tr>
-                            })
-                         } */}
-
 
                     </tbody>
                 </table>
