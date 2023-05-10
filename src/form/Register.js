@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function AddUser() {
+export default function Register() {
 
 
     let navigate = useNavigate();
@@ -10,9 +10,11 @@ export default function AddUser() {
     const [user, setUser] = useState({
         name: "",
         username: "",
-        email: ""
+        email: "",
+        mobile: "",
+        password: ""
     })
-    const { name, username, email } = user;
+    const { name, username, email, mobile, password } = user;
 
     const onInputChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value })
@@ -20,11 +22,9 @@ export default function AddUser() {
 
     const onSubmit =async (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:8080/user", user)
-        navigate("/")
+        await axios.post("http://localhost:8080/api/auth/signup", user)
+        navigate("/api/auth/signin")
     }
-
-
 
     return (
         <div className='container'>
@@ -73,8 +73,36 @@ export default function AddUser() {
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
-                        <button type='submit' className='btn btn-outline-info'>Submit</button>
-                        <Link className='btn btn-outline-danger mx-2' to={"/"}>Cancel</Link>
+
+                        <div className='mb-3'>
+                            <label htmlFor='Email' className='form-label'>
+                                Mobile
+                            </label>
+                            <input
+                                type={"number"}
+                                className='form-control'
+                                placeholder='Enter Mobile Number '
+                                name='mobile'
+                                value={mobile} // comes from ==> const {name, username, email} = user;
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+
+                        <div className='mb-3'>
+                            <label htmlFor='Email' className='form-label'>
+                                Password
+                            </label>
+                            <input
+                                type={"password"}
+                                className='form-control'
+                                placeholder='Enter Password '
+                                name='password'
+                                value={password} // comes from ==> const {name, username, email} = user;
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <button type='submit' className='btn btn-outline-info'>Register</button>
+                        <Link className='btn btn-outline-danger mx-2' to={"/api/auth/signin"}>Already have an account? Sign In</Link>
                     </form>
                 </div>
             </div>

@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { formatDateTime } from "../utils/Helpers";
 
-export default function Home() {
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
+function Products() {
 
-  useEffect(() => {
+
+    const [users, setUsers] = useState([]);
+    const [error, setError] = useState(null);
+    const [product, setProduct] = useState([]);
+
+    useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/users/all', {
+        const response = await axios.get('http://localhost:8080/api/products/view', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
             windows: 'true',
           },
         });
-        console.log(response.data[0].roles[0].name)
-        setUsers(response.data);
+        console.log(response)
+        setProduct(response.data);
       } catch (error) {
         setError(error.message);
       }
@@ -56,7 +58,7 @@ export default function Home() {
     const accessToken = localStorage.getItem('accessToken');
     console.log("accessToken " +accessToken);
     try {
-      const response = await axios.delete(`http://localhost:8080/api/users/users/delete/${id}`, {
+      const response = await axios.post(`http://localhost:8080/api/products/mark/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -76,43 +78,47 @@ export default function Home() {
     return <div>{`Error: ${error} `}</div>;
   }
 
+
   return (
-    <div className='container'>
-        <h3>To Delete A User You Must Be An Admin</h3>
+    <>
+
+<div className='container'>
+        <h3>To Create a Product, You Must Be An Admin</h3>
+        <Link className='btn btn-primary mx-2' to={'/addproduct'}>
+                    Add A New Product
+                  </Link>
+                  <Link className='btn btn-danger mx-2' to={'/favourites'}>
+                    View Favourites
+                  </Link>
       <div className='py-4'>
         <table className='table border shadow'>
           <thead>
             <tr>
               <th scope='col'>S.N</th>
-              <th scope='col'>Full Name</th>
-              <th scope='col'>Email</th>
-              <th scope='col'>Username</th>
-              <th scope='col'>Joined On</th>
+              <th scope='col'>Product Name</th>
+              <th scope='col'>Price</th>
+              <th scope='col'>Available Quantity</th>
               <th scope='col'>Action</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
-              <tr key={user.id}>
+            {product.map((product, index) => (
+              <tr key={product.id}>
                 <th scope='row'>{index + 1}</th>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.username}</td>
-                <td>{formatDateTime(user.createdAt)}</td>
+                <td>{product.productName}</td>
+                <td>{product.quantity}</td>
+                <td>{product.price}</td>
                 <td>
-                  <Link className='btn btn-primary mx-2' to={`/viewuser/${user.id}`}>
-                    View
-                  </Link>
-                  <Link className='btn btn-outline-primary mx-2' to={`/edituser/${user.id}`}>
-                    Edit
-                  </Link>
+                  {/* <Link className='btn btn-primary mx-2' to={`/viewuser/${product.id}`}>
+                    Mark as Favourite
+                  </Link> */}
                   <button
-                    className='btn btn-danger mx-2'
+                    className='btn btn-primary mx-2'
                     onClick={() => {
-                      deleteUser(user.id);
+                      deleteUser(product.id);
                     }}
                   >
-                    Delete
+                    Mark as Favourite
                   </button>
                 </td>
               </tr>
@@ -121,10 +127,10 @@ export default function Home() {
         </table>
       </div>
     </div>
-  );
+
+    
+    </>
+  )
 }
 
-
-
-
-
+export default Products

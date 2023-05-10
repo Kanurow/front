@@ -3,35 +3,53 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function EditUser() {
-
+  const [error, setError] = useState(null);
   let navigate = useNavigate();
-
-  const {id} = useParams();
-
-  const [user, setUser] = useState({
-    name: "",
-    username: "",
-    email: ""
-  })
-  const { name, username, email } = user;
+  const [users, setUsers] = useState([]);
+  const {id} = useParams()
+  useEffect(() => {
+      const fetchUsers = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8080/api/users/${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+              windows: 'true',
+            },
+          });
+          console.log(response.data)
+          setUsers(response.data);
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+      fetchUsers();
+    }, []);
+  const { name, username, email, mobile } = users;
 
   const onInputChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value })
+    setUsers({ ...users, [e.target.name]: e.target.value })
   }
 
-  useEffect(() => {
-    loadUser();
-  }, []) 
+
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`http://localhost:8080/user/${id}`, user)
+    // await axios.put(`http://localhost:8080/user/${id}`, users)
+    try {
+      const response = await axios.put(`http://localhost:8080/api/users/update/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          windows: 'true',
+        },
+      });
+      console.log(response)
+      setUsers(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
     navigate("/")
-  }
-
-
-  const loadUser =async () => {
-    const result =await axios.get(`http://localhost:8080/user/${id}`)
-    setUser(result.data)
   }
 
 
@@ -65,6 +83,20 @@ function EditUser() {
                 placeholder='Enter Username'
                 name='username'
                 value={username}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+
+            <div className='mb-3'>
+              <label htmlFor='Name' className='form-label'>
+                Mobile
+              </label>
+              <input
+                type={"text"}
+                className='form-control'
+                placeholder='Enter Mobile Number'
+                name='mobile'
+                value={mobile}
                 onChange={(e) => onInputChange(e)}
               />
             </div>

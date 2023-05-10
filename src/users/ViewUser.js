@@ -3,23 +3,61 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 export default function ViewUser() {
+    const [error, setError] = useState(null);
+    
 
-    const [user, setUsers] = useState({
-        name:"",
-        username:"",
-        email:""
-    })
+    // const [user, setUsers] = useState({
+    //     name:"",
+    //     username:"",
+    //     email:""
+    // })
+    const [users, setUsers] = useState([]);
 
     const {id} = useParams()
+    useEffect(() => {
+        const fetchUsers = async () => {
+          try {
+            const response = await axios.get(`http://localhost:8080/api/users/${id}`, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                windows: 'true',
+              },
+            });
+            console.log(response.data)
+            setUsers(response.data);
+          } catch (error) {
+            setError(error.message);
+          }
+        };
+    
+        fetchUsers();
+      }, []);
 
-    useEffect(()=> {
-        loadUser();
-    },[])
+    // useEffect(()=> {
+    //     const fetchUsers = async () => {
+    //         try {
+    //           const response = await axios.get(`http://localhost:8080/user/${id}`, {
+    //             headers: {
+    //               'Content-Type': 'application/json',
+    //               Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    //               windows: 'true',
+    //             },
+    //           });
+    //           console.log(response)
+    //           setUsers(response.data);
 
-    const loadUser =async ()=>{
-        const result =await axios.get(`http://localhost:8080/user/${id}`)
-        setUsers(result.data)
-    }
+    //         } catch (error) {
+    //           setError(error.message);
+    //         }
+    //       };
+    // },[])
+
+    // const loadUser =async ()=>{
+    //     const result =await axios.get(`http://localhost:8080/user/${id}`);
+        
+    //     setUsers(result.data)
+    // }
 
 
     return (
@@ -29,19 +67,19 @@ export default function ViewUser() {
                     <h2 className='text-center m-4'>User Details</h2>
                     <div className='card'>
                         <div className='card-header'>
-                            Details of user id:
+                            USERS PROFILE
                             <ul className='list-group list-group-flush'>
                                 <li className='list-group-item'>
-                                    <b>Name:</b>
-                                    {user.name}
+                                    <b>Name: </b>
+                                    {users.name}
                                 </li>
                                 <li className='list-group-item'>
-                                    <b>Username:</b>
-                                    {user.username}
+                                    <b>Username: </b>
+                                    {users.username}
                                 </li>
                                 <li className='list-group-item'>
-                                    <b>E-mail:</b>
-                                    {user.email}
+                                    <b>E-mail: </b>
+                                    {users.email}
                                 </li>
                             </ul>
                         </div>
