@@ -7,6 +7,23 @@ export default function Home() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
+  const [user, setUser] = useState([]);
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/users/user/me', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          windows: 'true',
+        },
+      });
+      setUser(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -17,7 +34,6 @@ export default function Home() {
             windows: 'true',
           },
         });
-        console.log(response.data[0].roles[0].name)
         setUsers(response.data);
       } catch (error) {
         setError(error.message);
@@ -25,6 +41,7 @@ export default function Home() {
     };
 
     fetchUsers();
+    fetchUser();
   }, []);
 
   // const deleteUser = async (id) => {
@@ -76,9 +93,71 @@ export default function Home() {
     return <div>{`Error: ${error} `}</div>;
   }
 
+
+
+
+
+
+
+
+
+
+
+
+  // let myArray = [
+  //   {
+  //     "id": 1,
+  //     "product": {
+  //       "id": 1,
+  //       "productName": "beans",
+  //       "price": 24,
+  //       "quantity": 250
+  //     },
+  //     "user": {
+  //       "createdAt": "2023-05-10T20:53:24.688027Z",
+  //       "updatedAt": "2023-05-10T20:53:24.688027Z",
+  //       "id": 1,
+  //       "name": "samland",
+  //       "username": "rowland",
+  //       "mobile": "8143358911",
+  //       "email": "Kanurow@gmail.com",
+  //       "password": "$2a$10$0H4Aci/JWe5qHU74KTpEYO7UWRdAyjhLgZivGrbHjYPQBKSuqLC7m",
+  //       "authorities": null,
+  //       "roles": [
+  //         {
+  //           "id": 2,
+  //           "name": "ROLE_ADMIN"
+  //         }
+  //       ],
+  //       "enabled": true,
+  //       "accountNonLocked": true,
+  //       "accountNonExpired": true,
+  //       "credentialsNonExpired": true
+  //     }
+  //   }
+  // ];
+  
+  // users.forEach((item) => {
+  //   console.log(item.id);
+  //   console.log(item.name);
+  //   // console.log(item.product.productName);
+  //   // console.log(item.user.name);
+  //   console.log(item.roles[0].name);
+  //   // Add more properties as needed
+  // });
+  
+
+
+
   return (
+
+
+    <>
+
     <div className='container'>
-        <h3>To Delete A User You Must Be An Admin</h3>
+        <h3>Hi, {user.username} To Delete A User You Must Be An Admin</h3>
+        <p>PS: Deleting yourself will lead to signing up again.</p>
+        <p>PS: To create an admin account, while registering. add "row" to your email.</p>
       <div className='py-4'>
         <table className='table border shadow'>
           <thead>
@@ -87,6 +166,7 @@ export default function Home() {
               <th scope='col'>Full Name</th>
               <th scope='col'>Email</th>
               <th scope='col'>Username</th>
+              <th scope='col'>Role</th>
               <th scope='col'>Joined On</th>
               <th scope='col'>Action</th>
             </tr>
@@ -98,14 +178,15 @@ export default function Home() {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.username}</td>
+                <td>{user.roles[0].name}</td>
                 <td>{formatDateTime(user.createdAt)}</td>
                 <td>
                   <Link className='btn btn-primary mx-2' to={`/viewuser/${user.id}`}>
                     View
                   </Link>
-                  <Link className='btn btn-outline-primary mx-2' to={`/edituser/${user.id}`}>
+                  {/* <Link className='btn btn-outline-primary mx-2' to={`/edituser/${user.id}`}>
                     Edit
-                  </Link>
+                  </Link> */}
                   <button
                     className='btn btn-danger mx-2'
                     onClick={() => {
@@ -121,6 +202,17 @@ export default function Home() {
         </table>
       </div>
     </div>
+
+
+
+
+
+
+    
+
+
+
+    </>
   );
 }
 

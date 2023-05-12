@@ -6,6 +6,7 @@ export default function AddProduct() {
 
     let navigate = useNavigate();
     const [error, setError] = useState(null);
+    const [users, setUsers] = useState([]);
 
     const [product, setProduct] = useState({
         productName: "",
@@ -22,33 +23,89 @@ export default function AddProduct() {
     const onSubmit =async (e) => {
         e.preventDefault();
         // await axios.post("http://localhost:8080/api/products/create", product);
-        submitProduct();
+        console.log("HERE " + product)
+        submitProduct(e);
+        // deleteUser(e);
+        
         navigate("/products");
     }
 
     
-        const submitProduct = async () => {
-            console.log(localStorage.getItem('accessToken'));
-          try {
-            const response = await axios.post("http://localhost:8080/api/products/create", {
-                productName: productName,
-                price: price,
-                quantity: quantity,
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-                windows: 'true',
-              },
-            });
-            console.log(response)
-            setProduct(response.data);
-          } catch (error) {
-            console.log(error + " ERROR");
-            setError(error.message);
-          }
-        };
+    // const submitProduct = async (e) => {
+    //     console.log(localStorage.getItem('accessToken'));
+    //     try {
+    //     const response = await axios.post("http://localhost:8080/api/products/create", {
+    //         productName: productName,
+    //         price: price,
+    //         quantity: quantity,
+    //         headers: {
+    //         'Content-Type': 'application/json',
+    //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    //         windows: 'true',
+    //         },
+    //     });
+    //     console.log(response)
+    //     setProduct(response.data);
+    //       } catch (error) {
+    //     console.log(error + " ERROR");
+    //     setError(error.message);
+    //   }
+    // };
     
-        
+    const submitProduct = async (e) => {
+        console.log(localStorage.getItem('accessToken'));
+        try {
+        const response = await axios.post("http://localhost:8080/api/products/create", {
+            productName: productName,
+            price: price,
+            quantity: quantity
+        }, {
+            headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            windows: 'true',
+            }
+            ,
+        });
+        console.log(response.data)
+        setProduct(response.data);
+        } catch (error) {
+        console.log(error + " ERROR");
+        setError(error.message);
+      }
+
+
+    };
+
+
+
+
+
+    const deleteUser = async (e) => {
+        const accessToken = localStorage.getItem('accessToken');
+        console.log("accessToken " +accessToken);
+        try {
+          const response = await axios.post("http://localhost:8080/api/products/create", {
+            productName: productName,
+            price: price,
+            quantity: quantity,
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+              windows: 'true',
+            },
+          });
+          console.log(response.data);
+          setProduct(response.data);
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+
+
+
+
+
       
 
     return (

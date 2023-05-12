@@ -3,13 +3,11 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 function Products() {
+  const [error, setError] = useState(null);
+  const [product, setProduct] = useState([]);
 
 
-    const [users, setUsers] = useState([]);
-    const [error, setError] = useState(null);
-    const [product, setProduct] = useState([]);
-
-    useEffect(() => {
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/products/view', {
@@ -19,7 +17,7 @@ function Products() {
             windows: 'true',
           },
         });
-        console.log(response)
+        console.log(response.data)
         setProduct(response.data);
       } catch (error) {
         setError(error.message);
@@ -27,6 +25,7 @@ function Products() {
     };
 
     fetchUsers();
+
   }, []);
 
   // const deleteUser = async (id) => {
@@ -54,83 +53,81 @@ function Products() {
   //   }
   // }
 
-  const deleteUser = async (id) => {
-    const accessToken = localStorage.getItem('accessToken');
-    console.log("accessToken " +accessToken);
+  const markProduct = async (e) => {
     try {
-      const response = await axios.post(`http://localhost:8080/api/products/mark/${id}`, {
+      const response = await axios.post(`http://localhost:8080/api/products/mark/${e}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           windows: 'true',
         },
       });
-      console.log(response.data);
-      setUsers(users.filter((user) => user.id !== id));
+      console.log(response.data)
+      // setProduct(response.data);
     } catch (error) {
-      setError(error.message);
+      setError(" CANNOT MARK TWICE: Refresh page");
     }
   };
-  
-
 
   if (error) {
     return <div>{`Error: ${error} `}</div>;
   }
 
+  // Check if `product` is an array before using the `map()` method
+  // if (!Array.isArray(product)) {
+  //   console.log("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+  //   // return <div>Loading...</div>;
+  // }
 
   return (
     <>
-
-<div className='container'>
+      <div className='container'>
         <h3>To Create a Product, You Must Be An Admin</h3>
         <Link className='btn btn-primary mx-2' to={'/addproduct'}>
-                    Add A New Product
-                  </Link>
-                  <Link className='btn btn-danger mx-2' to={'/favourites'}>
-                    View Favourites
-                  </Link>
-      <div className='py-4'>
-        <table className='table border shadow'>
-          <thead>
-            <tr>
-              <th scope='col'>S.N</th>
-              <th scope='col'>Product Name</th>
-              <th scope='col'>Price</th>
-              <th scope='col'>Available Quantity</th>
-              <th scope='col'>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {product.map((product, index) => (
-              <tr key={product.id}>
-                <th scope='row'>{index + 1}</th>
-                <td>{product.productName}</td>
-                <td>{product.quantity}</td>
-                <td>{product.price}</td>
-                <td>
-                  {/* <Link className='btn btn-primary mx-2' to={`/viewuser/${product.id}`}>
-                    Mark as Favourite
-                  </Link> */}
-                  <button
-                    className='btn btn-primary mx-2'
-                    onClick={() => {
-                      deleteUser(product.id);
-                    }}
-                  >
-                    Mark as Favourite
-                  </button>
-                </td>
+          Add A New Product
+        </Link>
+        <Link className='btn btn-danger mx-2' to={'/favourites'}>
+          View Favourites
+        </Link>
+        <div className='py-4'>
+          <table className='table border shadow'>
+            <thead>
+              <tr>
+                <th scope='col'>S.N</th>
+                <th scope='col'>Product Name</th>
+                <th scope='col'>Available Quantity</th>
+                <th scope='col'>Price</th>
+                
+                <th scope='col'>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+            </thead>
+            <tbody>
+              
+              {Object.entries(product).map((product, index) => (
+                <tr key={product.id}>
+                  <th scope='row'>{index + 1}</th>
+                  <td>{product[1].productName}</td>
+                  <td>{product[1].quantity}</td>
+                  <td>{product[1].price}</td>
+                  <td>
+                    <button
+                      className='btn btn-primary mx-2'
+                      onClick={() => {
+                        markProduct(product[1].id);
+                      }}
+                    >
+                      Mark as Favourite
+                    </button>
+                  </td>
+                </tr>
+              ))}
 
-    
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default Products
+export default Products;

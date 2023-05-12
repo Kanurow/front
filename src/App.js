@@ -27,7 +27,7 @@ function App() {
         <Route exact path="/api/auth/signup" element={<Register />} />
         <Route exact path="/api/auth/signin" element={<Signin />} />
         {/* <Route exact path='/adduser' element={<AddUser />} /> */}
-        <Route exact path="/edituser/:id" element={<EditUser />} />
+        {/* <Route exact path="/edituser/:id" element={<EditUser />} /> */}
         <Route exact path="/viewuser/:id" element={<ViewUser />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/addproduct" element={<AddProduct />} />

@@ -78,7 +78,7 @@ export default function Signin() {
 
                         <div className='mb-3'>
                             <label htmlFor='Name' className='form-label'>
-                                Username
+                                Username/E-mail
                             </label>
                             <input
                                 type={"text"}
