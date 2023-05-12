@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Products() {
   const [error, setError] = useState(null);
   const [product, setProduct] = useState([]);
+  let navigate = useNavigate();
 
 
   useEffect(() => {
@@ -67,6 +68,7 @@ function Products() {
     } catch (error) {
       setError(" CANNOT MARK TWICE: Refresh page");
     }
+    navigate("/favourites");
   };
 
   if (error) {
