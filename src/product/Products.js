@@ -75,11 +75,23 @@ function Products() {
     return <div>{`Error: ${error} `}</div>;
   }
 
-  // Check if `product` is an array before using the `map()` method
-  // if (!Array.isArray(product)) {
-  //   console.log("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-  //   // return <div>Loading...</div>;
-  // }
+
+  const deleteProduct = async (e) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/products/delete/${e}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          windows: 'true',
+        },
+      });
+      console.log(response.data)
+      // setProduct(response.data);
+    } catch (error) {
+      setError(" CANNOT DELETE A PRODUCT TWICE: Refresh page");
+    }
+    // navigate("/products");
+  };
 
   return (
     <>
@@ -119,6 +131,14 @@ function Products() {
                       }}
                     >
                       Mark as Favourite
+                    </button>
+                    <button
+                      className='btn btn-danger mx-2'
+                      onClick={() => {
+                        deleteProduct(product[1].id);
+                      }}
+                    >
+                      Delete Product
                     </button>
                   </td>
                 </tr>

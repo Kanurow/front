@@ -26,49 +26,7 @@ function Favourites() {
   fetchUsers();
 }, []);
 
-// const deleteUser = async (id) => {
-//   try {
-//     const response = await axios.delete(`http://localhost:8080/api/users/users/delete/${id}`);
-//     console.log(response);
-//     setUsers(users.filter((user) => user.id !== id));
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-// const deleteUser = async (id) => {
-//   try {
-//     const response = await axios.delete(`http://localhost:8080/api/users/users/delete/${id}`, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-//         windows: 'true',
-//       },
-//     });
-//     console.log(response.data)
-//     setUsers(response.data);
-//   } catch (error) {
-//     setError(error.message);
-//   }
-// }
 
-// const markProduct = async (id) => {
-
-//   const accessToken = localStorage.getItem('accessToken');
-//   console.log("accessToken " +accessToken);
-//   try {
-//     const response = await axios.post(`http://localhost:8080/api/products/mark/${id}`, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-//         windows: 'true',
-//       },
-//     });
-//     console.log(response.data);
-//     setFavourite(favourite.filter((favourite) => favourite.id !== id));
-//   } catch (error) {
-//     setError(error.message);
-//   }
-// };
 
 const unmarkProduct = async (id) => {
   const accessToken = localStorage.getItem('accessToken');

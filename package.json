@@ -9,6 +9,7 @@
     "antd": "^5.4.7",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "phosphor": "^0.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.0",
