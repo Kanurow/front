@@ -51,36 +51,10 @@ function Products() {
 
   }, []);
 
-  // const deleteUser = async (id) => {
-  //   try {
-  //     const response = await axios.delete(`http://localhost:8080/api/users/users/delete/${id}`);
-  //     console.log(response);
-  //     setUsers(users.filter((user) => user.id !== id));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const deleteUser = async (id) => {
-  //   try {
-  //     const response = await axios.delete(`http://localhost:8080/api/users/users/delete/${id}`, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //         windows: 'true',
-  //       },
-  //     });
-  //     console.log(response.data)
-  //     setUsers(response.data);
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  // }
+
 
   console.log(user.id);
   const markProduct = async (e) => {
-
-    // if (user) {}
-
     try {
       const response = await axios.post(`http://localhost:8080/api/products/mark/${e}/${user.id}`, {
         headers: {
@@ -127,7 +101,10 @@ function Products() {
           Add A New Product
         </Link>
         <Link className='btn btn-danger mx-2' to={'/favourites'}>
-          View Favourites
+          View All Marked Favourites
+        </Link>
+        <Link className='btn btn-secondary mx-2' to={'/myfavourites'}>
+          View My Marked Favourites
         </Link>
         <div className='py-4'>
           <table className='table border shadow'>

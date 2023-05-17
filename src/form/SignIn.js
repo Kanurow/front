@@ -5,8 +5,6 @@ import { ACCESS_TOKEN } from '../constants';
 
 export default function Signin() {
 
-    
-
     let navigate = useNavigate();
 
     const [user, setUser] = useState({

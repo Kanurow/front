@@ -12,6 +12,7 @@ import AddProduct from "./product/AddProduct";
 import Products from './product/Products';
 import Favourites from './product/Favourites';
 import AddPromo from './promo/AddPromo';
+import ViewMarked from './promo/ViewMarked';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
         <Route exact path="/addproduct" element={<AddProduct />} />
         <Route exact path="/favourites" element={<Favourites />} />
         <Route exact path="/addPromoCode" element={<AddPromo />} />
+        <Route exact path='/myfavourites' element={<ViewMarked />} />
 
       </Routes>
 

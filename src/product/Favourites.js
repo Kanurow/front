@@ -61,14 +61,10 @@ if (error) {
   return (
     <>
     <div className='container'>
-        <h3>List Of Marked Products</h3>
-        {/* <Link className='btn btn-primary mx-2' to={'/addproduct'}>
-                    Add A New Product
-                  </Link> */}
-                  {/* <Link className='btn btn-danger mx-2' to={'/products'}>
-                    View Favourites
-                  </Link> */}
-                  <Link className='btn btn-outline-danger mx-2' to={"/products"}>Back To Products</Link>
+        <h3>List Of All Marked Products</h3>
+
+          <Link className='btn btn-outline-danger mx-2' to={"/products"}>Back To Products</Link>
+          <Link className='btn btn-outline-info mx-2' to={"/myfavourites"}>View My Marked Favourites</Link>
                   
       <div className='py-4'>
         <table className='table border shadow'>
