@@ -81,6 +81,10 @@ export default function ViewUser() {
                                     <b>E-mail: </b>
                                     {users.email}
                                 </li>
+                                <li className='list-group-item'>
+                                    <b>voucher Balance: </b>
+                                    {users.voucherBalance || "No Voucher Available"}
+                                </li>
                             </ul>
                         </div>
                     </div>

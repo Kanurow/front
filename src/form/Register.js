@@ -12,9 +12,10 @@ export default function Register() {
         username: "",
         email: "",
         mobile: "",
+        promoCode: "",
         password: ""
     })
-    const { name, username, email, mobile, password } = user;
+    const { name, username, email, mobile, promoCode, password } = user;
 
     const onInputChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value })
@@ -47,7 +48,7 @@ export default function Register() {
                         </div>
 
                         <div className='mb-3'>
-                            <label htmlFor='Name' className='form-label'>
+                            <label htmlFor='Username' className='form-label'>
                                 Username
                             </label>
                             <input
@@ -75,7 +76,7 @@ export default function Register() {
                         </div>
 
                         <div className='mb-3'>
-                            <label htmlFor='Email' className='form-label'>
+                            <label htmlFor='MobileNumber' className='form-label'>
                                 Mobile
                             </label>
                             <input
@@ -88,8 +89,26 @@ export default function Register() {
                             />
                         </div>
 
+
+
                         <div className='mb-3'>
-                            <label htmlFor='Email' className='form-label'>
+                            <label htmlFor='PromoCode' className='form-label'>
+                                Enter Promocode (If Any)
+                            </label>
+                            <input
+                                type={"text"}
+                                className='form-control'
+                                placeholder='Enter Promocode '
+                                name='promoCode'
+                                value={promoCode} 
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+
+
+
+                        <div className='mb-3'>
+                            <label htmlFor='Password' className='form-label'>
                                 Password
                             </label>
                             <input
@@ -97,7 +116,7 @@ export default function Register() {
                                 className='form-control'
                                 placeholder='Enter Password '
                                 name='password'
-                                value={password} // comes from ==> const {name, username, email} = user;
+                                value={password} 
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>

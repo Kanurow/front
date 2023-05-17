@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import { ShoppingCart } from "phosphor-react";
 
 export default function Navbar() {
 
@@ -14,9 +13,7 @@ export default function Navbar() {
             
             <Link className='btn btn-outline-light' to="/api/auth/signup">Add User</Link>
             <Link className='btn btn-outline-light' to="/products">View Products</Link>
-            {/* <Link>
-            <ShoppingCart size={34} />
-            </Link> */}
+            <Link className='btn btn-outline-light' to="/addPromoCode">Create PromoCode</Link>
         </nav>
 
     </div>

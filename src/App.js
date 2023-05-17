@@ -4,13 +4,14 @@ import Navbar from './layout/Navbar';
 import Home from './pages/Home';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 // import AddUser from './users/AddUser';
-import EditUser from './users/EditUser';
+// import EditUser from './users/EditUser';
 import ViewUser from './users/ViewUser';
 import Register from './form/Register';
 import Signin from './form/SignIn';
 import AddProduct from "./product/AddProduct";
 import Products from './product/Products';
 import Favourites from './product/Favourites';
+import AddPromo from './promo/AddPromo';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/addproduct" element={<AddProduct />} />
         <Route exact path="/favourites" element={<Favourites />} />
+        <Route exact path="/addPromoCode" element={<AddPromo />} />
 
       </Routes>
 

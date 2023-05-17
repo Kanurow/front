@@ -3,13 +3,34 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Products() {
+  const [user, setUser] = useState([]);
+
+
+  
+
+
   const [error, setError] = useState(null);
   const [product, setProduct] = useState([]);
   let navigate = useNavigate();
 
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/users/user/me', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          windows: 'true',
+        },
+      });
+      setUser(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/products/view', {
           headers: {
@@ -25,7 +46,8 @@ function Products() {
       }
     };
 
-    fetchUsers();
+    fetchProducts();
+    fetchUser();
 
   }, []);
 
@@ -54,9 +76,13 @@ function Products() {
   //   }
   // }
 
+  console.log(user.id);
   const markProduct = async (e) => {
+
+    // if (user) {}
+
     try {
-      const response = await axios.post(`http://localhost:8080/api/products/mark/${e}`, {
+      const response = await axios.post(`http://localhost:8080/api/products/mark/${e}/${user.id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -90,7 +116,7 @@ function Products() {
     } catch (error) {
       setError(" CANNOT DELETE A PRODUCT TWICE: Refresh page");
     }
-    // navigate("/products");
+    navigate("/products");
   };
 
   return (
@@ -135,7 +161,7 @@ function Products() {
                     <button
                       className='btn btn-danger mx-2'
                       onClick={() => {
-                        deleteProduct(product[1].id);
+                        deleteProduct(product[1].id, user.id);
                       }}
                     >
                       Delete Product

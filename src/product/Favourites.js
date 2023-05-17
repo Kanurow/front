@@ -43,7 +43,7 @@ const unmarkProduct = async (id) => {
   },
   }
   );
-  console.log(response.data + "Omooooo")
+  // console.log(response.data)
   setFavourite(favourite.filter((favourite) => favourite.id !== id));
   } catch (error) {
     setError(error.message)
@@ -78,6 +78,7 @@ if (error) {
               <th scope='col'>Product Name</th>
               <th scope='col'>Price</th>
               <th scope='col'>Quantity</th>
+              <th scope='col'>Marked By</th>
               {/* <th scope='col'>Name of User</th> */}
               {/* <th scope='col'>User Role</th> */}
               <th scope='col'>Action</th>
@@ -91,7 +92,7 @@ if (error) {
                 <td>{favourite.product.productName}</td>
                 <td>{favourite.product.price}</td>
                 <td>{favourite.product.quantity}</td>
-                {/* <td>{favourite.user.name}</td> */}
+                <td>{favourite.user.name}</td>
                 {/* <td>{favourite.user.roles[0].name}</td> */}
                 <td>
                   {/* <Link className='btn btn-primary mx-2' to={`/viewuser/${product.id}`}>

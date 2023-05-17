@@ -202,23 +202,8 @@ export default function Home() {
         </table>
       </div>
 
-
-
-
-
     </div>
-
-
-
-<div>
-  Products
-</div>
-
-
-
     
-
-
 
     </>
   );

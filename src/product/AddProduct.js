@@ -31,29 +31,9 @@ export default function AddProduct() {
     }
 
     
-    // const submitProduct = async (e) => {
-    //     console.log(localStorage.getItem('accessToken'));
-    //     try {
-    //     const response = await axios.post("http://localhost:8080/api/products/create", {
-    //         productName: productName,
-    //         price: price,
-    //         quantity: quantity,
-    //         headers: {
-    //         'Content-Type': 'application/json',
-    //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    //         windows: 'true',
-    //         },
-    //     });
-    //     console.log(response)
-    //     setProduct(response.data);
-    //       } catch (error) {
-    //     console.log(error + " ERROR");
-    //     setError(error.message);
-    //   }
-    // };
+
     
     const submitProduct = async (e) => {
-        console.log(localStorage.getItem('accessToken'));
         try {
         const response = await axios.post("http://localhost:8080/api/products/create", {
             productName: productName,
