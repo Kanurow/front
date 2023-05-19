@@ -35,14 +35,16 @@ export default function AddPromo() {
         console.log(response.data)
         setPromo(response.data);
         } catch (error) {
-        console.log(error + " ERROR!!!");
+        console.log(error + "You are not An Admin");
         setError(error.message);
+        if (error) {
+            return <div>{`Error: ${error} `}</div>
+          }
+        
       }
       navigate("/products")
     };
   
-
-
     
 
 
@@ -51,6 +53,7 @@ export default function AddPromo() {
             <div className='row'>
                 <div className='col-md-6 offset-md-3 border rounded p-4 mt-2 shadow'>
                     <h2 className='text-center m-4'>Create PromoCode</h2>
+                    <p>PS: Only Admins can create valid promo code names.</p>
                     <form onSubmit={(e)=> onSubmit(e)}>
                     
 
@@ -81,6 +84,7 @@ export default function AddPromo() {
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
+                        <div>{error}</div>
                         <button type='submit' className='btn btn-outline-info'>Create</button>
                         
                         <Link className='btn btn-outline-danger mx-2' to={"/products"}>Cancel</Link>

@@ -115,4 +115,4 @@ if (error) {
   )
 }
 
-export default Favourites
+export default Favourites;
