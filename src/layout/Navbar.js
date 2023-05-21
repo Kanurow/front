@@ -11,7 +11,7 @@ export default function Navbar() {
             <Link className="navbar-brand" to={"/"}>E Commerce Demo</Link>
             </div>
             
-            <Link className='btn btn-outline-light' to="/api/auth/signup">Add User</Link>
+            <Link className='btn btn-outline-light' to="/api/auth/signup">Register User/Sign In</Link>
             <Link className='btn btn-outline-light' to="/products">View Products</Link>
             <Link className='btn btn-outline-light' to="/addPromoCode">Create PromoCode</Link>
         </nav>
