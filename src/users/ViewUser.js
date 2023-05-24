@@ -4,13 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 
 export default function ViewUser() {
     const [error, setError] = useState(null);
-    
 
-    // const [user, setUsers] = useState({
-    //     name:"",
-    //     username:"",
-    //     email:""
-    // })
     const [users, setUsers] = useState([]);
 
     const {id} = useParams()
@@ -33,31 +27,6 @@ export default function ViewUser() {
     
         fetchUsers();
       }, []);
-
-    // useEffect(()=> {
-    //     const fetchUsers = async () => {
-    //         try {
-    //           const response = await axios.get(`http://localhost:8080/user/${id}`, {
-    //             headers: {
-    //               'Content-Type': 'application/json',
-    //               Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    //               windows: 'true',
-    //             },
-    //           });
-    //           console.log(response)
-    //           setUsers(response.data);
-
-    //         } catch (error) {
-    //           setError(error.message);
-    //         }
-    //       };
-    // },[])
-
-    // const loadUser =async ()=>{
-    //     const result =await axios.get(`http://localhost:8080/user/${id}`);
-        
-    //     setUsers(result.data)
-    // }
 
 
     return (
@@ -84,6 +53,10 @@ export default function ViewUser() {
                                 <li className='list-group-item'>
                                     <b>voucher Balance: </b>
                                     {users.voucherBalance || "No Voucher Available"}
+                                </li>
+                                <li className='list-group-item'>
+                                    <b>Account Balance: #</b>
+                                    {users.accountBalance || "0"}
                                 </li>
                             </ul>
                         </div>

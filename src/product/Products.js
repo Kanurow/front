@@ -45,6 +45,7 @@ function Products() {
   }, []);
 
 
+
   const deleteProduct = async (productId) => {
     try {
       await axios.delete(`http://localhost:8080/api/products/delete/${productId}`, {
@@ -87,8 +88,39 @@ function Products() {
     } catch (error) {
       setError('Cannot mark a product twice. Please refresh the page.');
     }
-    navigate('/favourites');
+    navigate('/myfavourites');
   };
+
+
+  const addToCart = async (productId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/products/addtocart/${productId}/${user.id}`,
+        null,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            windows: 'true',
+          },
+        }
+      );
+
+      setProducts(prevProducts => {
+        return prevProducts.map(product => {
+          if (product.id === productId) {
+            return response.data;
+          }
+          return product;
+        });
+      });
+    } catch (error) {
+      setError('Cannot add a product twice. Please refresh the page.');
+    }
+    navigate('/shoppingcart');
+  };
+
+
 
   if (error) {
     return <div>{`Error: ${error}`}</div>;
@@ -97,15 +129,26 @@ function Products() {
   return (
     <>
       <div className='container'>
-        <h3>To Create a Product, You Must Be An Admin</h3>
+
+        
+        <h5>To Create a Product, You Must Be An Admin</h5>
+        <h5>To View All Marked Product, You Must Be An Admin</h5>
         <Link className='btn btn-primary mx-2' to='/addproduct'>
           Add A New Product
         </Link>
+
+
         <Link className='btn btn-danger mx-2' to='/favourites'>
           View All Marked Favourites
         </Link>
+        {console.log(user)}
+
+
         <Link className='btn btn-info mx-2' to='/myfavourites'>
           View My Marked Favourites
+        </Link>
+        <Link className='btn btn-danger mx-2' to='/shoppingcart'>
+          My Shopping Cart
         </Link>
         <div className='py-4'>
           <table className='table border shadow'>
@@ -126,6 +169,12 @@ function Products() {
                   <td>{product.quantity}</td>
                   <td>{product.price}</td>
                   <td>
+                  <button
+                      className='btn btn-primary mx-2'
+                      onClick={() => addToCart(product.id)}
+                    >
+                      Add to Cart
+                    </button>
                     <button
                       className='btn btn-primary mx-2'
                       onClick={() => markProduct(product.id)}

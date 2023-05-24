@@ -67,7 +67,7 @@ export default function Home() {
 
   if (error) {
     return <div>
-    Signup or Log into your account -- Click on AddUser
+    Something went wrong, reload page.
     </div>;
   }
 

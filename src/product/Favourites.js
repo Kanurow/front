@@ -28,27 +28,27 @@ function Favourites() {
 
 
 
-const unmarkProduct = async (id) => {
-  const accessToken = localStorage.getItem('accessToken');
-  console.log(accessToken);
-  try {
-  const response = await axios.delete(
-  `http://localhost:8080/api/products/unmark/${id}`,
-  {},
-  {
-  headers: {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${localStorage.getItem('accessToken')}`,  
-  windows: 'true',
-  },
-  }
-  );
-  // console.log(response.data)
-  setFavourite(favourite.filter((favourite) => favourite.id !== id));
-  } catch (error) {
-    setError(error.message)
-  }
+
+
+  const unmarkProduct = async (id) => {
+    const accessToken = localStorage.getItem('accessToken');
+    try {
+      await axios.delete(`http://localhost:8080/api/products/unmark/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+          windows: 'true',
+        },
+      });
+      setFavourite((prevFavorites) => prevFavorites.filter((favorite) => favorite.id !== id));
+    } catch (error) {
+      console.error(error); // Log the error object for debugging
+      setError(error.message);
+    }
   };
+
+
+
 
 
 
@@ -62,6 +62,10 @@ if (error) {
     <>
     <div className='container'>
         <h3>List Of All Marked Products</h3>
+        <Link className='btn shopping-cart-btn'>
+          { favourite.length > 0 && <span className='product-count'> Total Marked Products:  {favourite.length}</span>}
+        </Link>
+        
 
           <Link className='btn btn-outline-danger mx-2' to={"/products"}>Back To Products</Link>
           <Link className='btn btn-outline-info mx-2' to={"/myfavourites"}>View My Marked Favourites</Link>
@@ -75,8 +79,6 @@ if (error) {
               <th scope='col'>Price</th>
               <th scope='col'>Quantity</th>
               <th scope='col'>Marked By</th>
-              {/* <th scope='col'>Name of User</th> */}
-              {/* <th scope='col'>User Role</th> */}
               <th scope='col'>Action</th>
 
             </tr>
@@ -89,11 +91,8 @@ if (error) {
                 <td>{favourite.product.price}</td>
                 <td>{favourite.product.quantity}</td>
                 <td>{favourite.user.name}</td>
-                {/* <td>{favourite.user.roles[0].name}</td> */}
                 <td>
-                  {/* <Link className='btn btn-primary mx-2' to={`/viewuser/${product.id}`}>
-                    Mark as Favourite
-                  </Link> */}
+                
                   <button
                     className='btn btn-danger mx-2'
                     onClick={() => {

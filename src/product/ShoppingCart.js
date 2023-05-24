@@ -1,12 +1,16 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { GiShoppingBag } from 'react-icons/gi';
 
-function ViewMarked() {
+function ShoppingCart() {
+
+
+
   const [user, setUser] = useState([]);
   const [error, setError] = useState(null);
-  const [favourite, setFavourite] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -19,7 +23,7 @@ function ViewMarked() {
           },
         });
         setUser(response.data);
-        fetchUserFavourites(response.data.id);
+        fetchUserShoppingCart(response.data.id);
       } catch (error) {
         setError(error.message);
       }
@@ -28,37 +32,38 @@ function ViewMarked() {
     fetchUser();
   }, []);
 
-  const fetchUserFavourites = async (userId) => {
+  const fetchUserShoppingCart = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/products/favourites/${userId}`, {
+      const response = await axios.get(`http://localhost:8080/api/products/cart/${userId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           windows: 'true',
         },
       });
-      const favoritesWithData = response.data.map((favorite) => ({
-        ...favorite,
+      const cartWithData = response.data.map((cart) => ({
+        ...cart,
         quantity: 0, // Initialize quantity to 0
       }));
-      console.log(favoritesWithData)
-      setFavourite(favoritesWithData);
+      console.log(cartWithData)
+
+      setCart(cartWithData);
     } catch (error) {
       setError(error.message);
     }
   };
 
-  const unmarkProduct = async (id) => {
+  const removeItem = async (id) => {
     const accessToken = localStorage.getItem('accessToken');
     try {
-      await axios.delete(`http://localhost:8080/api/products/unmark/${id}`, {
+      await axios.delete(`http://localhost:8080/api/products/removefromcart/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
           windows: 'true',
         },
       });
-      setFavourite((prevFavorites) => prevFavorites.filter((favorite) => favorite.id !== id));
+      setCart((prevCart) => prevCart.filter((item) => item.id !== id));
     } catch (error) {
       console.error(error); // Log the error object for debugging
       setError(error.message);
@@ -66,24 +71,24 @@ function ViewMarked() {
   };
 
   const updateQuantity = (index, newQuantity) => {
-    const maxQuantity = favourite[index].product.quantity;
+    const maxQuantity = cart[index].product.quantity;
     if (newQuantity < 0) {
       return;
     }
     if (newQuantity > maxQuantity) {
       newQuantity = maxQuantity;
     }
-    setFavourite((prevFavorites) => {
-      const updatedFavorites = [...prevFavorites];
-      updatedFavorites[index].quantity = newQuantity;
-      return updatedFavorites;
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart];
+      updatedCart[index].quantity = newQuantity;
+      return updatedCart;
     });
   };
 
   const calculateTotal = () => {
     let total = 0;
-    favourite.forEach((favorite) => {
-      total += favorite.product.price * favorite.quantity;
+    cart.forEach((item) => {
+      total += item.product.price * item.quantity;
     });
     return total;
   };
@@ -92,16 +97,17 @@ function ViewMarked() {
     return <div>{`Error: ${error}`}</div>;
   }
 
+
   return (
     <>
       <div className="container">
-        <h3>My List Of Marked Products</h3>
+        <h3>Shopping Cart</h3>
         <Link className="btn btn-outline-danger mx-2" to="/products">
           Back To Products
         </Link>
         <Link className="btn shopping-cart-btn">
           <GiShoppingBag size={30} />
-          {favourite.length > 0 && <span className="product-count">{favourite.length}</span>}
+          {cart.length > 0 && <span className="product-count">{cart.length}</span>}
         </Link>
 
         <div className="py-4">
@@ -112,40 +118,44 @@ function ViewMarked() {
                 <th scope="col">Product Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Available Quantity</th>
-                <th scope="col">Quantity Demanded</th>
+                <th scope="col">Unit Total Cost</th>
+                <th scope="col">Quantity Ordered</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
+
             <tbody>
-              {favourite.map((favorite, index) => (
-                <tr key={favorite.id}>
+              {cart.map((item, index) => (
+                <tr key={item.id}>
                   <th scope="row">{index + 1}</th>
-                  <td>{favorite.product.productName}</td>
-                  <td>{favorite.product.price}</td>
-                  <td>{favorite.product.quantity}</td>
-                  {/* <td>{favorite.product.quantity * favorite.product.price}</td> */}
+                  <td>{item.product.productName}</td>
+                  <td>{item.product.price}</td>
+                  <td>{item.product.quantity}</td>
+                  <td>{item.product.price * item.quantity}</td>
                   <td>
-                    <button onClick={() => updateQuantity(index, favorite.quantity - 1)}>-</button>
-                    {favorite.quantity}
-                    <button onClick={() => updateQuantity(index, favorite.quantity + 1)}>+</button>
+                    <button onClick={() => updateQuantity(index, item.quantity - 1)}>-</button>
+                    {item.quantity}
+                    <button onClick={() => updateQuantity(index, item.quantity + 1)}>+</button>
                   </td>
                   <td>
-                    <button className="btn btn-danger mx-2" onClick={() => unmarkProduct(favorite.id)}>
-                      UnMark
+                    <button className="btn btn-danger mx-2" onClick={() => removeItem(item.id)}>
+                      removeItem
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
+
+
           </table>
         </div>
       </div>
 
-      <div className="btn btn-outline-secondary mx-2">Share</div>
-      <div className="btn btn-outline-info mx-2"> Shopping Total Cost: #{calculateTotal()}</div>
-      <div className="btn btn-outline-dark mx-2"> Checkout</div>
+      <div className="btn btn-outline-secondary mx-2"> Shopping Total Cost: #{calculateTotal()}</div>
+      <div className="btn btn-outline-dark mx-2"> Check Out</div>
+
     </>
   );
 }
 
-export default ViewMarked;
+export default ShoppingCart;
