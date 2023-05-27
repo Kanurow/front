@@ -13,9 +13,10 @@ export default function Register() {
         email: "",
         mobile: "",
         promoCode: "",
+        accountBalance: "",
         password: ""
     })
-    const { name, username, email, mobile, promoCode, password } = user;
+    const { name, username, email, mobile, promoCode, password, accountBalance } = user;
 
     const onInputChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value })
@@ -24,6 +25,7 @@ export default function Register() {
     const onSubmit =async (e) => {
         e.preventDefault();
         await axios.post("http://localhost:8080/api/auth/signup", user);
+        console.log(user);
         navigate("/api/auth/signin");
     }
 
@@ -70,7 +72,7 @@ export default function Register() {
                                 className='form-control'
                                 placeholder='Enter Email '
                                 name='email'
-                                value={email} // comes from ==> const {name, username, email} = user;
+                                value={email} 
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
@@ -84,7 +86,7 @@ export default function Register() {
                                 className='form-control'
                                 placeholder='Enter Mobile Number '
                                 name='mobile'
-                                value={mobile} // comes from ==> const {name, username, email} = user;
+                                value={mobile} 
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
@@ -101,6 +103,21 @@ export default function Register() {
                                 placeholder='Enter Promocode '
                                 name='promoCode'
                                 value={promoCode} 
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+
+
+                        <div className='mb-3'>
+                            <label htmlFor='deposit' className='form-label'>
+                                Deposit Into Account (Optional)
+                            </label>
+                            <input
+                                type={"number"}
+                                className='form-control'
+                                placeholder='Enter Initial Deposit'
+                                name='accountBalance'
+                                value={accountBalance} 
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>

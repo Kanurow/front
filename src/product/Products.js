@@ -141,7 +141,6 @@ function Products() {
         <Link className='btn btn-danger mx-2' to='/favourites'>
           View All Marked Favourites
         </Link>
-        {console.log(user)}
 
 
         <Link className='btn btn-info mx-2' to='/myfavourites'>
@@ -149,6 +148,9 @@ function Products() {
         </Link>
         <Link className='btn btn-danger mx-2' to='/shoppingcart'>
           My Shopping Cart
+        </Link>
+        <Link className='btn btn-danger mx-2' to='/checkedout'>
+          My Purchases
         </Link>
         <div className='py-4'>
           <table className='table border shadow'>

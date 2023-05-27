@@ -1,16 +1,14 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { GiShoppingBag } from 'react-icons/gi';
 
 function ShoppingCart() {
-
-
-
   const [user, setUser] = useState([]);
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -45,7 +43,6 @@ function ShoppingCart() {
         ...cart,
         quantity: 0, // Initialize quantity to 0
       }));
-      console.log(cartWithData)
 
       setCart(cartWithData);
     } catch (error) {
@@ -97,6 +94,9 @@ function ShoppingCart() {
     return <div>{`Error: ${error}`}</div>;
   }
 
+  const handleCheckout = () => {
+    navigate('/checkout', { state: { cart } });
+  };
 
   return (
     <>
@@ -105,55 +105,64 @@ function ShoppingCart() {
         <Link className="btn btn-outline-danger mx-2" to="/products">
           Back To Products
         </Link>
-        <Link className="btn shopping-cart-btn">
-          <GiShoppingBag size={30} />
-          {cart.length > 0 && <span className="product-count">{cart.length}</span>}
-        </Link>
 
-        <div className="py-4">
-          <table className="table border shadow">
-            <thead>
-              <tr>
-                <th scope="col">S.N</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Available Quantity</th>
-                <th scope="col">Unit Total Cost</th>
-                <th scope="col">Quantity Ordered</th>
-                <th scope="col">Action</th>
+          <Link className="btn shopping-cart-btn">
+           <GiShoppingBag size={30} />
+           {cart.length > 0 && <span className="product-count">{cart.length}</span>}
+         </Link>
+
+
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Product Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity In Stock</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Subtotal</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cart.map((item, index) => (
+              <tr key={item.id}>
+                <td>{item.product.productName}</td>
+                <td>${item.product.price}</td>
+                <td>{item.product.quantity}</td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    min="0"
+                    max={item.product.quantity}
+                    value={item.quantity}
+                    onChange={(e) => updateQuantity(index, parseInt(e.target.value))}
+                  />
+                </td>
+                <td>${item.product.price * item.quantity}</td>
+                <td>
+                  <button
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={() => removeItem(item.id)}
+                  >
+                    Remove
+                  </button>
+                </td>
               </tr>
-            </thead>
-
-            <tbody>
-              {cart.map((item, index) => (
-                <tr key={item.id}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{item.product.productName}</td>
-                  <td>{item.product.price}</td>
-                  <td>{item.product.quantity}</td>
-                  <td>{item.product.price * item.quantity}</td>
-                  <td>
-                    <button onClick={() => updateQuantity(index, item.quantity - 1)}>-</button>
-                    {item.quantity}
-                    <button onClick={() => updateQuantity(index, item.quantity + 1)}>+</button>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger mx-2" onClick={() => removeItem(item.id)}>
-                      removeItem
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-
-
-          </table>
-        </div>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="3"></td>
+              <th>Total:</th>
+              <th>${calculateTotal()}</th>
+            </tr>
+          </tfoot>
+        </table>
+        <button className="btn btn-outline-dark mx-2" onClick={handleCheckout}>
+          Checkout
+        </button>
       </div>
-
-      <div className="btn btn-outline-secondary mx-2"> Shopping Total Cost: #{calculateTotal()}</div>
-      <div className="btn btn-outline-dark mx-2"> Check Out</div>
-
     </>
   );
 }

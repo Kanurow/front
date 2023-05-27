@@ -66,8 +66,8 @@ export default function Home() {
 
 
   if (error) {
-    return <div>
-    Something went wrong, reload page.
+    return <div style={{color: "red"}}>
+    Something Went Wrong! Reload page or Sign into your account!
     </div>;
   }
 

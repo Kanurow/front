@@ -65,8 +65,6 @@ if (error) {
         <Link className='btn shopping-cart-btn'>
           { favourite.length > 0 && <span className='product-count'> Total Marked Products:  {favourite.length}</span>}
         </Link>
-        
-
           <Link className='btn btn-outline-danger mx-2' to={"/products"}>Back To Products</Link>
           <Link className='btn btn-outline-info mx-2' to={"/myfavourites"}>View My Marked Favourites</Link>
                   
