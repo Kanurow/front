@@ -57,28 +57,6 @@ export default function AddProduct() {
 
 
 
-    // const deleteUser = async (e) => {
-    //     const accessToken = localStorage.getItem('accessToken');
-    //     console.log("accessToken " +accessToken);
-    //     try {
-    //       const response = await axios.post("http://localhost:8080/api/products/create", {
-    //         productName: productName,
-    //         price: price,
-    //         quantity: quantity,
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    //           windows: 'true',
-    //         },
-    //       });
-    //       console.log(response.data);
-    //       setProduct(response.data);
-    //     } catch (error) {
-    //       setError(error.message);
-    //     }
-    //   };
-
-
 
 
 
@@ -134,6 +112,7 @@ export default function AddProduct() {
 
                         <button type='submit' className='btn btn-outline-info'>Add Product</button>
                         <Link className='btn btn-outline-danger mx-2' to={"/products"}>Cancel</Link>
+                        {error && <p className="text-danger">{error} : You have to be an admin.</p>}
                     </form>
                 </div>
             </div>

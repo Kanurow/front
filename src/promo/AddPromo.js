@@ -84,11 +84,11 @@ export default function AddPromo() {
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
-                        <div>{error}</div>
+                        <div>{error && <p className="text-danger">{error} : You have to be an admin.</p>}</div>
                         <button type='submit' className='btn btn-outline-info'>Create</button>
                         
                         <Link className='btn btn-outline-danger mx-2' to={"/products"}>Cancel</Link>
-                        {/* {token && <p>Token: {token}</p>} Display the token */}
+                        
                     </form>
                 </div>
             </div>

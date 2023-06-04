@@ -9,6 +9,7 @@ export default function Home() {
 
   const [user, setUser] = useState([]);
 
+  
   const fetchUser = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/users/user/me', {
@@ -88,8 +89,9 @@ export default function Home() {
               <th scope='col'>Full Name</th>
               <th scope='col'>Email</th>
               <th scope='col'>Username</th>
+              <th scope='col'>Account Number</th>
+              <th scope='col'>Account Balance</th>
               <th scope='col'>Role</th>
-              <th scope='col'>Joined On</th>
               <th scope='col'>Action</th>
             </tr>
           </thead>
@@ -100,8 +102,9 @@ export default function Home() {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.username}</td>
+                <td>{user.accountNumber}</td>
+                <td>{user.accountBalance}</td>
                 <td>{user.roles[0].name}</td>
-                <td>{formatDateTime(user.createdAt)}</td>
                 <td>
                   <Link className='btn btn-primary mx-2' to={`/viewuser/${user.id}`}>
                     View

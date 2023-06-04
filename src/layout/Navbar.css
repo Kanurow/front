@@ -1,0 +1,51 @@
+.with-tooltip {
+    position: relative;
+  }
+
+  .searchbtn {
+    background-color: #e26804;
+  }
+  .searchbtn:hover {
+    background-color: #be5b09;
+  }
+
+  .navbar {
+    background-color:#f8f8f8;
+  }
+
+
+  
+  .logo-image {
+    height: 40px; /* Adjust the height as needed */
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
+
+  .with-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -60%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: #000;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .with-tooltip:hover::after {
+    opacity: 1;
+  }
+  
